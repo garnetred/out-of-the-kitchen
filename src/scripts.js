@@ -43,6 +43,7 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.remove('shown'));
     recipePage.classList.remove('hidden')
     recipePage.classList.toggle('shown')
+    populatePantryPage();
   } else if (event.target === allRecipesNavItem && searchResults.classList.contains('hidden')) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
@@ -154,6 +155,39 @@ function removeRecipeFromFavorites() {
     console.log(user0.favoriteRecipes)
     currentRecipeDiv.remove();
   }
+}
+
+function populatePantryPage() {
+  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
+  recipePage.innerHTML += (`<h2>${currentRecipe.name}</h2>
+  <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
+  <ul class="recipe-ingredients">
+    <h3>Ingredients</h3>`)
+  currentRecipe.ingredients.forEach(ing => {
+    recipePage.innerHTML +=
+      (`<li>${ing.quantity.amount} ${ing.quantity.unit}</li>`)
+  })
+  recipePage.innerHTML +=
+  (`</ul>
+  <ol class="instructions">
+    <h3>Instructions</h3>`)
+  currentRecipe.instructions.forEach(instruction => {
+    recipePage.innerHTML +=
+    (`<li>${instruction.instruction}</li>`)
+  })
+  recipePage.innerHTML +=
+  (`</ol>
+  <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>`)
+  showRecipeAlert();
+}
+
+function showRecipeAlert() {
+  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
+  console.log(currentRecipe);
+  console.log(event.target.id);
+  const user0 = new User(usersData[0]);
+  return user0.checkIngredientAmts(currentRecipe)
+  // checkIngredientAmts()
 }
 
 
