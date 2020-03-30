@@ -33,6 +33,7 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.remove('shown'));
     pantry.classList.remove('hidden')
     pantry.classList.toggle('shown')
+    populatePantryPage();
   } else if (event.target === mealPlanNavItem && mealPlan.classList.contains('hidden')) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
@@ -43,7 +44,7 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.remove('shown'));
     recipePage.classList.remove('hidden')
     recipePage.classList.toggle('shown')
-    populatePantryPage();
+    populateRecipePage();
   } else if (event.target === allRecipesNavItem && searchResults.classList.contains('hidden')) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
@@ -157,7 +158,8 @@ function removeRecipeFromFavorites() {
   }
 }
 
-function populatePantryPage() {
+function populateRecipePage() {
+  recipePage.innerHTML = "";
   let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
   recipePage.innerHTML += (`<h2>${currentRecipe.name}</h2>
   <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
@@ -181,12 +183,28 @@ function populatePantryPage() {
   showRecipeAlert();
 }
 
+function populatePantryPage() {
+  const table = document.querySelector('.pantry-table')
+    user0.pantry.forEach(ingredient => {
+      ingredientsData.find(ing => {
+        if (ing.id === ingredient.ingredient) {
+          table.innerHTML +=
+          `<tr>
+          <td>${ing.name}</td>
+          <td>${ingredient.amount}</td>
+          </tr>
+          <br />`
+        }
+      })
+    })
+}
+
 function showRecipeAlert() {
   let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
   console.log(currentRecipe);
   console.log(event.target.id);
-  const user0 = new User(usersData[0]);
-  return user0.checkIngredientAmts(currentRecipe)
+  console.log(user0);
+  user0.checkIngredientAmts(currentRecipe);
   // checkIngredientAmts()
 }
 
