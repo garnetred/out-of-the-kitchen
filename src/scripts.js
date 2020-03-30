@@ -43,6 +43,7 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.remove('shown'));
     recipePage.classList.remove('hidden')
     recipePage.classList.toggle('shown')
+    populatePantryPage();
   } else if (event.target === allRecipesNavItem && searchResults.classList.contains('hidden')) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
@@ -57,4 +58,78 @@ function addUserToPage() {
   console.log(user0);
 }
 
+<<<<<<< Updated //need to create function that instantiates all recipes
+//display all recipes in the search page in a function -- all should be unchecked for now
+//create function that is invoked when "favorite" icon is clicked
+// after favorite icon is clicked, should now become selected icons
+//the function should also make sure that the favorite meal function from the class is invoked with recipe as the argument
+//favorite meal should then be added to the DOM using interpolation
+//create click function that executes if you've clicked one of the unselected or selected buttons;
+
+function instantiateAllRecipes() {
+  let instantiatedRecipes = recipeData.map((recipe, index) => {
+  let eachRecipe = new Recipe(recipe);
+  return eachRecipe;
+});
+  addRecipesToSearchPage(instantiatedRecipes)
+}
+
+function addRecipesToSearchPage(instantiatedRecipes) {
+  //add functionality to add each recipe to the javascript
+  //create constant for the div that holds all of the searches in it
+  instantiatedRecipes.forEach(recipe => {
+  allRecipesSection.innerHTML += `<div class="recipe-card" id="${recipe.id}">
+    <img class="recipe-card-image" src=${recipe.image} alt=${recipe.name}>
+    <p class="recipe-card-title">${recipe.name}</p>
+    <img class="unselected-heart" src="../assets/heart-regular.svg" alt="unselected heart icon">
+    <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook">
+  </div>`
+});
+
+}
+
+function favoriteRecipe() {
+//should add recipe to favorited recipe array
+//should also display recipe in favorites section
+  // user.favoriteMeal()
+  console.log('in favorite recipe function!')
+}
+
+function addRecipeToMealPlan() {
+  console.log('in add recipe to meal plan  function!')
+
+}
+
+function populatePantryPage() {
+  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
+  recipePage.innerHTML += (`<h2>${currentRecipe.name}</h2>
+  <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
+  <ul class="recipe-ingredients">
+    <h3>Ingredients</h3>`)
+  currentRecipe.ingredients.forEach(ing => {
+    recipePage.innerHTML +=
+      (`<li>${ing.quantity.amount} ${ing.quantity.unit}</li>`)
+  })
+  recipePage.innerHTML +=
+  (`</ul>
+  <ol class="instructions">
+    <h3>Instructions</h3>`)
+  currentRecipe.instructions.forEach(instruction => {
+    recipePage.innerHTML +=
+    (`<li>${instruction.instruction}</li>`)
+  })
+  recipePage.innerHTML +=
+  (`</ol>
+  <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>`)
+  showRecipeAlert();
+}
+
+function showRecipeAlert() {
+  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
+  console.log(currentRecipe);
+  console.log(event.target.id);
+  const user0 = new User(usersData[0]);
+  return user0.checkIngredientAmts(currentRecipe)
+  // checkIngredientAmts()
+}
 window.onload = addUserToPage();

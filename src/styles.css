@@ -73,7 +73,7 @@ table td span {
 }
 
 .instructions {
-  margin: 0px 50px 50px 20px;
+  margin: 50px 50px 50px 20px;
   width: 40%;
 }
 
@@ -148,6 +148,11 @@ table td span {
 .recipe-page-image {
   float: right;
   width: 50%;
+  margin: 50px;
+}
+
+.recipe-page h2 {
+  text-align: center;
 }
 
 /* icons */
@@ -188,6 +193,15 @@ table td span {
 
 .pantry {
   margin-top: 150px;
+}
+
+.able-to-cook-alert {
+  width: 200px;
+  background-color: green;
+  border-radius: 10px;
+  color: white;
+  margin-top: 20px;
+  padding: 5px;
 }
 
 .pantry-sub-header {
