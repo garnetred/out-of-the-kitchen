@@ -50,8 +50,11 @@ table {
 }
 
 table tr {
-    background: white;
-    border-bottom: 1px solid
+    border-bottom: 1px solid;
+}
+
+table td {
+  margin-left: 200px;
 }
 
 table th,
@@ -65,7 +68,6 @@ table td span {
     font-weight: bold;
     padding: 5px;
 }
-
 
 .recipe-ingredients {
   margin: 50px 50px 50px 20px;
