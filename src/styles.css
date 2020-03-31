@@ -198,7 +198,7 @@ table td span {
 }
 
 .able-to-cook-alert {
-  width: 200px;
+  width: 300px;
   background-color: green;
   border-radius: 10px;
   color: white;
@@ -218,12 +218,47 @@ table td span {
   /* justify-content: center; */
 }
 
+.search-bar {
+  margin: 8% 20% 5% 0;
+  float: right;
+  width: 30%;
+  display: flex;
+}
+
+.search-button-icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 3px;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.search-button {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #43A2FE;
+  background: #43A2FE;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.search-term {
+  width: 100%;
+  border: 3px solid #43A2FE;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  color: black;
+}
+
 .favorited-recipe-group,
 .meal-plan-group{
   position: absolute;
   top: 20%;
   width: 80%;
-  margin: 0 15%;
+  margin: 10% 15% 0 15%;
 }
 
 .all-recipes-group {
@@ -234,8 +269,7 @@ table td span {
 
 .favorites-header,
 .meal-plan-header {
-  margin-left: 16%;
-  margin-top: 100px;
+  margin: 8% 0 5% 16%;
   position: absolute;
 }
 
