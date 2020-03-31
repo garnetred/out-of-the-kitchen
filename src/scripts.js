@@ -7,10 +7,12 @@ const pantry = document.querySelector('.pantry');
 const allRecipesSection = document.querySelector('.all-recipes-group');
 const user0 = new User(usersData[0]);
 const searchButton = document.querySelector('.search-button');
+let currentRecipeForCalc;
 
 document.addEventListener('click', changePageView);
 allRecipesSection.addEventListener('click', selectCards);
 searchButton.addEventListener('click', searchFaveRecipes);
+recipePage.addEventListener('click', printNeededIngredients);
 
 function changePageView(event) {
   const header = document.getElementsByTagName('header')[0]
@@ -164,6 +166,7 @@ function populateRecipePage() {
   recipePage.innerHTML = "";
   let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
   recipePage.innerHTML += `<h2>${currentRecipe.name}</h2>
+  <button class="find-missing-ing-btn">Calculate Missing Ingredient</button>
   <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>
   <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
   <ul class="recipe-ingredients">
@@ -206,13 +209,30 @@ function populatePantryPage() {
 }
 
 function showRecipeAlert() {
+  let calcMissingIngredientsBtn = document.querySelector('.find-missing-ing-btn')
   let ableToCookAlert = document.querySelector('.able-to-cook-alert')
   let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
   let currentRecipe = new Recipe(currentRecipeData)
+  calculateMissingIngredients();
   if (user0.checkIngredientAmts(currentRecipe)) {
     ableToCookAlert.classList.remove('hidden');
+    calcMissingIngredientsBtn.classList.add('hidden')
   } else {
     ableToCookAlert.classList.add('hidden');
+    calcMissingIngredientsBtn.classList.remove('hidden')
+  }
+}
+
+function calculateMissingIngredients() {
+  let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
+  let currentRecipe = new Recipe(currentRecipeData)
+  user0.checkIngredientAmts(currentRecipe);
+  currentRecipeForCalc = currentRecipe.ingredientsNeeded;
+}
+
+function printNeededIngredients(event){
+  if (event.target.classList.contains('find-missing-ing-btn')) {
+    console.log(currentRecipeForCalc);
   }
 }
 
