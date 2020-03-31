@@ -55,6 +55,7 @@ class User {
       recipe.ingredientsNeeded.push({'id': ing.id, 'difference': ing.difference.toFixed(2) + " " + ing.quantity.unit})
       })
       return recipe.ingredientsNeeded
+      console.log()
     }
     // else {
     //   matchedIngredients.forEach(ing => {
