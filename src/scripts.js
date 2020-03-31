@@ -6,9 +6,11 @@ const searchResults = document.querySelector('.search-results');
 const pantry = document.querySelector('.pantry');
 const allRecipesSection = document.querySelector('.all-recipes-group');
 const user0 = new User(usersData[0]);
+const searchButton = document.querySelector('.search-button');
 
 document.addEventListener('click', changePageView);
 allRecipesSection.addEventListener('click', selectCards);
+searchButton.addEventListener('click', searchFaveRecipes);
 
 function changePageView(event) {
   const header = document.getElementsByTagName('header')[0]
@@ -161,25 +163,29 @@ function removeRecipeFromFavorites() {
 function populateRecipePage() {
   recipePage.innerHTML = "";
   let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
-  recipePage.innerHTML += (`<h2>${currentRecipe.name}</h2>
+  recipePage.innerHTML += `<h2>${currentRecipe.name}</h2>
+  <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>
   <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
   <ul class="recipe-ingredients">
-    <h3>Ingredients</h3>`)
+    <h3>Ingredients</h3>`
   currentRecipe.ingredients.forEach(ing => {
-    recipePage.innerHTML +=
-      (`<li>${ing.quantity.amount} ${ing.quantity.unit}</li>`)
+    ingredientsData.find(ingData => {
+      if (ingData.id === ing.id) {
+        recipePage.innerHTML +=
+        (`<li>${parseFloat(ing.quantity.amount).toFixed(2)} ${ing.quantity.unit} ${ingData.name}</li>`)
+      }
+    })
   })
   recipePage.innerHTML +=
-  (`</ul>
+  `</ul>
   <ol class="instructions">
-    <h3>Instructions</h3>`)
+    <h3>Instructions</h3>`
   currentRecipe.instructions.forEach(instruction => {
     recipePage.innerHTML +=
     (`<li>${instruction.instruction}</li>`)
   })
   recipePage.innerHTML +=
-  (`</ol>
-  <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>`)
+  `</ol>`
   showRecipeAlert();
 }
 
@@ -200,12 +206,37 @@ function populatePantryPage() {
 }
 
 function showRecipeAlert() {
-  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
-  console.log(currentRecipe);
-  console.log(event.target.id);
-  console.log(user0);
-  user0.checkIngredientAmts(currentRecipe);
-  // checkIngredientAmts()
+  let ableToCookAlert = document.querySelector('.able-to-cook-alert')
+  let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
+  let currentRecipe = new Recipe(currentRecipeData)
+  if (user0.checkIngredientAmts(currentRecipe)) {
+    ableToCookAlert.classList.remove('hidden');
+  } else {
+    ableToCookAlert.classList.add('hidden');
+  }
+}
+
+function searchFaveRecipes() {
+  const searchTerm = document.querySelector('.search-term');
+  const favoriteMealSection = document.querySelector('.favorited-recipe-group')
+  user0.favoriteRecipes.filter(faveRec => {
+      if (faveRec.name === searchTerm.value /*|| faveRec.ingredients === searchTerm.value*/) {
+        favoriteMealSection.innerHTML = (`<div class="recipe-card" id=${faveRec.id}>
+          <img class="recipe-card-image" src=${faveRec.image} alt="${faveRec.name}">
+          <p class="recipe-card-title">${faveRec.name}</p>
+          <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${faveRec.id}>
+          <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${faveRec.id}>
+        </div>`)
+      }
+    })
+    // console.log(user0.favoriteRecipes.ingredients);
+    // console.log(user0.favoriteRecipes);
+    // user0.favoriteRecipes.forEach(faveRec => {
+    //   faveRec.ingredients.forEach(faveRecIng => {
+    //     if (faveRecIng == searchTerm.value) {
+    //       console.log('dogs');
+    //
+    //     }
 }
 
 
