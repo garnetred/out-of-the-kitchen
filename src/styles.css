@@ -206,6 +206,16 @@ table td span {
   padding: 5px;
 }
 
+.price-to-make-alert {
+  width: 200px;
+  background-color: purple;
+  border-radius: 10px;
+  color: white;
+  margin-top: 20px;
+  padding: 5px;
+  align-items: right;
+}
+
 .pantry-sub-header {
   text-align: center;
 }
@@ -310,9 +320,48 @@ table td span {
   color: white;
   border-radius: 8px;
   position: absolute;
-  right: 10%;
-  bottom: 5%;
+  right: 15%;
+  bottom: 34%;
   width: 15%;
   height: 50px;
   font-size: 25px;
 }
+
+/*search page*/
+.box {
+  display: inline;
+  margin-left: 10px;
+}
+
+.filter-input {
+  margin: 100px auto;
+  width: 30%;
+  height: 20%;
+  display: flex;
+  font-size: 16px;
+  border-radius: 8px;
+}
+/* .search-button-icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 3px;
+}
+.search-button {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #43A2FE;
+  background: #43A2FE;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+} */
+
+/* .filter-options {
+  width: 100%;
+  border: 3px solid #43A2FE;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  color: black;
+} */

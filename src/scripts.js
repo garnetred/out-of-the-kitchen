@@ -8,11 +8,15 @@ const allRecipesSection = document.querySelector('.all-recipes-group');
 const user0 = new User(usersData[0]);
 const searchButton = document.querySelector('.search-button');
 let currentRecipeForCalc;
+const allIngredients = ingredientsData;
+const filterButton = document.querySelector('.filter-button')
 
 document.addEventListener('click', changePageView);
-allRecipesSection.addEventListener('click', selectCards);
+document.addEventListener('click', selectCards);
+filterButton.addEventListener('click', filterRecipes)
 searchButton.addEventListener('click', searchFaveRecipes);
 recipePage.addEventListener('click', printNeededIngredients);
+
 
 function changePageView(event) {
   const header = document.getElementsByTagName('header')[0]
@@ -73,7 +77,7 @@ function selectCards(event) {
     event.target.classList.remove('unselected-chef-hat')
   } else if (event.target.classList.contains('selected-heart')) {
     console.log(event.target)
-removeRecipeFromFavorites(event)
+    removeRecipeFromFavorites(event)
     event.target.src = "../assets/heart-regular.svg"
     event.target.alt = "unselected heart icon"
     event.target.classList.add('unselected-heart')
@@ -85,13 +89,8 @@ removeRecipeFromFavorites(event)
     event.target.alt="unselected recipe to cook"
     event.target.classList.add('unselected-chef-hat')
     event.target.classList.remove('selected-chef-hat')
-
   }
 }
-
-// function addUserToPage() {
-//   instantiateAllRecipes();
-// }
 
 function instantiateAllRecipes() {
   let instantiatedRecipes = recipeData.map((recipe, index) => {
@@ -115,6 +114,8 @@ function addRecipesToSearchPage(instantiatedRecipes) {
 function favoriteRecipe(event) {
   const favoriteMealSection = document.querySelector('.favorited-recipe-group')
   let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  currentRecipe.hasBeenFavorited = true;
+  console.log(currentRecipe);
   if (!user0.favoriteRecipes.includes(currentRecipe)) {
     user0.favoriteMeal(currentRecipe);
     favoriteMealSection.innerHTML += `<div class="recipe-card" id=${currentRecipe.id}>
@@ -129,13 +130,14 @@ function favoriteRecipe(event) {
 function addRecipeToMealPlan() {
   const mealPlanSection = document.querySelector('.meal-plan-group')
   let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  currentRecipe.hasBeenAddedToMealPlan = true;
   if (!user0.recipesToCook.includes(currentRecipe)) {
   user0.addRecipeToMealsToCook(currentRecipe);
     mealPlanSection.innerHTML += `<div class="recipe-card" id=${currentRecipe.id}>
       <img class="recipe-card-image" src=${currentRecipe.image} alt="${currentRecipe.name}">
       <p class="recipe-card-title">${currentRecipe.name}</p>
       <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${currentRecipe.id}>
-      <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${currentRecipe.id}>
+      <img class="selected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${currentRecipe.id}>
     </div>`;
   }
 }
@@ -143,6 +145,7 @@ function addRecipeToMealPlan() {
 function removeRecipeFromMealPlan() {
   const mealPlanSection = document.querySelector('.favorited-recipe-group')
   let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  currentRecipe.hasBeenAddedToMealPlan = false;
   const currentRecipeDiv = document.getElementById(`${currentRecipe.id}`)
   if (user0.recipesToCook.includes(currentRecipe)) {
     user0.removeRecipeFromMealsToCook(currentRecipe);
@@ -154,6 +157,7 @@ function removeRecipeFromMealPlan() {
 function removeRecipeFromFavorites() {
   const mealPlanSection = document.querySelector('.favorited-recipe-group')
   let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  currentRecipe.hasBeenAddedToMealPlan = false;
   const currentRecipeDiv = document.getElementById(`${currentRecipe.id}`)
   if (user0.favoriteRecipes.includes(currentRecipe)) {
     user0.unfavoriteMeal(currentRecipe);
@@ -190,6 +194,7 @@ function populateRecipePage() {
   recipePage.innerHTML +=
   `</ol>`
   showRecipeAlert();
+  getRecipeCost(allIngredients, event)
 }
 
 function populatePantryPage() {
@@ -240,28 +245,72 @@ function searchFaveRecipes() {
   const searchTerm = document.querySelector('.search-term');
   const favoriteMealSection = document.querySelector('.favorited-recipe-group')
   user0.favoriteRecipes.filter(faveRec => {
-      if (faveRec.name === searchTerm.value /*|| faveRec.ingredients === searchTerm.value*/) {
-        favoriteMealSection.innerHTML = (`<div class="recipe-card" id=${faveRec.id}>
-          <img class="recipe-card-image" src=${faveRec.image} alt="${faveRec.name}">
-          <p class="recipe-card-title">${faveRec.name}</p>
-          <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${faveRec.id}>
-          <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${faveRec.id}>
-        </div>`)
-      }
-    })
-    // console.log(user0.favoriteRecipes.ingredients);
-    // console.log(user0.favoriteRecipes);
-    // user0.favoriteRecipes.forEach(faveRec => {
+    if (faveRec.name === searchTerm.value /*|| faveRec.ingredients === searchTerm.value*/) {
+      favoriteMealSection.innerHTML = (`<div class="recipe-card" id=${faveRec.id}>
+      <img class="recipe-card-image" src=${faveRec.image} alt="${faveRec.name}">
+      <p class="recipe-card-title">${faveRec.name}</p>
+      <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${faveRec.id}>
+      <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${faveRec.id}>
+      </div>`)
+    }
+  })
+  // console.log(user0.favoriteRecipes.ingredients);
+  // console.log(user0.favoriteRecipes);
+  // user0.favoriteRecipes.forEach(faveRec => {
     //   faveRec.ingredients.forEach(faveRecIng => {
-    //     if (faveRecIng == searchTerm.value) {
-    //       console.log('dogs');
-    //
-    //     }
-}
+      //     if (faveRecIng == searchTerm.value) {
+        //       console.log('dogs');
+        //
+        //     }
+      }
 
+      function getRecipeCost(allIngredients, event) {
+        let instantiatedRecipes = recipeData.map((recipe, index) => {
+          let eachRecipe = new Recipe(recipe);
+          return eachRecipe;
+        });
+        let currentRecipe = instantiatedRecipes.find(recipe => recipe.id === parseInt(event.target.id))
+        console.log(currentRecipe)
+        console.log(typeof currentRecipe);
+        let cost = currentRecipe.calculateCostOfIngredients(allIngredients);
+        let costInDollars = (cost/100).toFixed(2)
+        console.log(costInDollars)
+        recipePage.innerHTML += `<section class="price-to-make-alert">This recipe costs $${costInDollars} to make.</section>`
+      }
 
-
-
-
-
-// window.onload = addUserToPage();
+      function filterRecipes() {
+        const ingredientsFilter = document.querySelector('.ingredients-filter');
+        const searchInput = document.querySelector('.filter-input');
+        let foundRecipeName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value))
+        let foundRecipeTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value))
+        let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === searchInput.value)
+        let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
+        let searchResults = []
+        searchResults.push(foundRecipeName, foundRecipeTag);
+        let crossreferencedIng = recipeData.filter(recipe => {
+          recipe.ingredients.forEach(ingredient => {
+            if (foundRecipeIngredientIds.includes(ingredient.id)) {
+              searchResults.push(recipe)
+            }
+          })
+        });
+        let flattenedSearchResults = searchResults.flat();
+        let searchResultsAsObj  = new Set(flattenedSearchResults);
+        let regSearchResults = [...searchResultsAsObj];
+        if (regSearchResults.length > 0) {
+          console.log('progress!')
+          allRecipesSection.innerHTML = '';
+          regSearchResults.forEach(recipe => {
+            allRecipesSection.innerHTML += `<div class="recipe-card" id =${recipe.id}>
+            <img class="recipe-card-image" src=${recipe.image} alt=${recipe.name}>
+            <p class="recipe-card-title">${recipe.name}</p>
+            <img class="unselected-heart" src="../assets/heart-regular.svg" alt="unselected heart icon" id=${recipe.id}>
+            <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
+            </div>`
+          });
+        } else {
+          console.log('not here')
+          allRecipesSection.innerHTML = '';
+          allRecipesSection.innerHTML = `<p>No Search Results Found</p>`
+        }
+      }

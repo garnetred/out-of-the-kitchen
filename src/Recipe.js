@@ -10,6 +10,7 @@ class Recipe {
     this.printedInstructions = undefined;
     this.hasBeenCooked = false;
     this.hasBeenFavorited = false;
+    this.hasBeenAddedToMealPlan = false;
     this.ingredientPrices = [];
     this.canBeCooked = null;
     this.ingredientsNeeded = [];

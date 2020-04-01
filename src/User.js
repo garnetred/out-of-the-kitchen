@@ -40,6 +40,7 @@ class User {
   }
 
   logMissingIngredientAmounts(recipe, matchedIngredients, missingIngredients) {
+    console.log(recipe)
     if (matchedIngredients.length === 0) {
       missingIngredients.forEach(ing => {
       recipe.ingredientsNeeded.push({'id': ing.id, 'difference': ing.quantity.amount.toFixed(2) + " " + ing.quantity.unit})
@@ -54,6 +55,7 @@ class User {
       recipe.ingredientsNeeded.push({'id': ing.id, 'difference': ing.difference.toFixed(2) + " " + ing.quantity.unit})
       })
       return recipe.ingredientsNeeded
+      console.log()
     }
     // else {
     //   matchedIngredients.forEach(ing => {
