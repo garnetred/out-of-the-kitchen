@@ -243,7 +243,8 @@ table td span {
   pointer-events: none;
 }
 
-.search-button {
+.search-button,
+.meal-plan-search-btn {
   width: 40px;
   height: 36px;
   border: 1px solid #43A2FE;
@@ -253,7 +254,8 @@ table td span {
   cursor: pointer;
 }
 
-.search-term {
+.search-term,
+.meal-plan-search-term {
   width: 100%;
   border: 3px solid #43A2FE;
   border-right: none;
