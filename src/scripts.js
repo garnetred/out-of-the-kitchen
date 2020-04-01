@@ -7,6 +7,7 @@ const pantry = document.querySelector('.pantry');
 const allRecipesSection = document.querySelector('.all-recipes-group');
 const user0 = new User(usersData[0]);
 const searchButton = document.querySelector('.search-button');
+const searchButtonMealPlan = document.querySelector('.meal-plan-search-btn');
 let currentRecipeForCalc;
 const allIngredients = ingredientsData;
 const filterButton = document.querySelector('.filter-button')
@@ -15,6 +16,7 @@ document.addEventListener('click', changePageView);
 document.addEventListener('click', selectCards);
 filterButton.addEventListener('click', filterRecipes)
 searchButton.addEventListener('click', searchFaveRecipes);
+searchButtonMealPlan.addEventListener('click', searchMealPlanRecipes);
 recipePage.addEventListener('click', printNeededIngredients);
 
 
@@ -169,7 +171,7 @@ function removeRecipeFromFavorites() {
 function populateRecipePage() {
   recipePage.innerHTML = "";
   let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
-  recipePage.innerHTML += `<h2>${currentRecipe.name}</h2>
+  recipePage.innerHTML += `<h2 class="recipe-title">${currentRecipe.name}</h2>
   <button class="find-missing-ing-btn">Calculate Missing Ingredient</button>
   <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>
   <img class="recipe-page-image" src=${currentRecipe.image} alt=${currentRecipe.name}>
@@ -218,7 +220,7 @@ function showRecipeAlert() {
   let ableToCookAlert = document.querySelector('.able-to-cook-alert')
   let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
   let currentRecipe = new Recipe(currentRecipeData)
-  calculateMissingIngredients();
+  addMissingIngAmount();
   if (user0.checkIngredientAmts(currentRecipe)) {
     ableToCookAlert.classList.remove('hidden');
     calcMissingIngredientsBtn.classList.add('hidden')
@@ -228,41 +230,115 @@ function showRecipeAlert() {
   }
 }
 
-function calculateMissingIngredients() {
+function addMissingIngAmount() {
   let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
   let currentRecipe = new Recipe(currentRecipeData)
   user0.checkIngredientAmts(currentRecipe);
   currentRecipeForCalc = currentRecipe.ingredientsNeeded;
+  addMissingIngName(currentRecipeForCalc);
+}
+
+function addMissingIngName(currentRecipeForCalc) {
+  return currentRecipeForCalc.map(ingInRec => {
+    ingredientsData.forEach(ing => {
+      if (ing.id === ingInRec.id) {
+        return ingInRec['name'] = ing.name
+      }
+    })
+  })
 }
 
 function printNeededIngredients(event){
+  let calcMissingIngredientsBtn = document.querySelector('.find-missing-ing-btn')
+  let recipeTitle = document.querySelector('.recipe-title')
   if (event.target.classList.contains('find-missing-ing-btn')) {
-    console.log(currentRecipeForCalc);
+    recipeTitle.insertAdjacentHTML('beforeend', `<p class="needed-ing-title">You still need the following to make this recipe:</p>`)
+    calcMissingIngredientsBtn.classList.add('hidden');
+    currentRecipeForCalc.forEach(ing => {
+      recipeTitle.insertAdjacentHTML('afterend', `<p>${ing.difference} ${ing.name}</p>`)
+    })
+    }
+  }
+
+
+function searchMealPlanRecipes() {
+  console.log(user0.recipesToCook);
+  const mealPlanSearchTerm = document.querySelector('.meal-plan-search-term');
+  let foundRecipeName = user0.recipesToCook.filter(recipe => recipe.name.toLowerCase().includes(mealPlanSearchTerm.value))
+  let foundRecipeTag = user0.recipesToCook.filter(recipe => recipe.tags.includes(mealPlanSearchTerm.value))
+  let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === mealPlanSearchTerm.value)
+  let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
+  let searchResults = [foundRecipeName, foundRecipeTag]
+  user0.recipesToCook.filter(recipe => {
+    recipe.ingredients.forEach(ingredient => {
+      if (foundRecipeIngredientIds.includes(ingredient.id)) {
+        searchResults.push(recipe)
+      }
+    })
+  });
+  let flattenedSearchResults = searchResults.flat();
+  console.log(flattenedSearchResults);
+  let searchResultsAsObj  = new Set(flattenedSearchResults);
+  let regSearchResults = [...searchResultsAsObj];
+  console.log(regSearchResults);
+  displayMealPlanRecipes(regSearchResults);
+}
+
+function displayMealPlanRecipes(regSearchResults) {
+  const mealPlanSection = document.querySelector('.meal-plan-group')
+  if (regSearchResults.length > 0) {
+    mealPlanSection.innerHTML = '';
+  regSearchResults.forEach(recipe => {
+      mealPlanSection.innerHTML += (`<div class="recipe-card" id=${recipe.id}>
+      <img class="recipe-card-image" src=${recipe.image} alt="${recipe.name}">
+      <p class="recipe-card-title">${recipe.name}</p>
+      <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${recipe.id}>
+      <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
+      </div>`)
+    })
   }
 }
 
 function searchFaveRecipes() {
   const searchTerm = document.querySelector('.search-term');
-  const favoriteMealSection = document.querySelector('.favorited-recipe-group')
-  user0.favoriteRecipes.filter(faveRec => {
-    if (faveRec.name === searchTerm.value /*|| faveRec.ingredients === searchTerm.value*/) {
-      favoriteMealSection.innerHTML = (`<div class="recipe-card" id=${faveRec.id}>
-      <img class="recipe-card-image" src=${faveRec.image} alt="${faveRec.name}">
-      <p class="recipe-card-title">${faveRec.name}</p>
-      <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${faveRec.id}>
-      <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${faveRec.id}>
-      </div>`)
-    }
-  })
-  // console.log(user0.favoriteRecipes.ingredients);
-  // console.log(user0.favoriteRecipes);
-  // user0.favoriteRecipes.forEach(faveRec => {
-    //   faveRec.ingredients.forEach(faveRecIng => {
-      //     if (faveRecIng == searchTerm.value) {
-        //       console.log('dogs');
-        //
-        //     }
+  let foundRecipeName = user0.favoriteRecipes.filter(recipe => recipe.name.toLowerCase().includes(searchTerm.value))
+  let foundRecipeTag = user0.favoriteRecipes.filter(recipe => recipe.tags.includes(searchTerm.value))
+  let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === searchTerm.value)
+  let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
+  let searchResults = [foundRecipeName, foundRecipeTag]
+    user0.favoriteRecipes.forEach(recipe => {
+      recipe.ingredients.forEach(ingredient => {
+      if (foundRecipeIngredientIds.includes(ingredient.id)) {
+        searchResults.push(recipe)
       }
+    })
+  });
+  let flattenedSearchResults = searchResults.flat();
+  let searchResultsAsObj  = new Set(flattenedSearchResults);
+  let regSearchResults = [...searchResultsAsObj];
+  displayFaveSearchedRecipes(regSearchResults);
+}
+
+function displayFaveSearchedRecipes(regSearchResults) {
+  const favoriteMealSection = document.querySelector('.favorited-recipe-group')
+  if (regSearchResults.length > 0) {
+    console.log(regSearchResults);
+    favoriteMealSection.innerHTML = '';
+  regSearchResults.forEach(recipe => {
+      favoriteMealSection.innerHTML += (`<div class="recipe-card" id=${recipe.id}>
+      <img class="recipe-card-image" src=${recipe.image} alt="${recipe.name}">
+      <p class="recipe-card-title">${recipe.name}</p>
+      <img class="selected-heart" src="../assets/heart-regular.svg" alt="selected heart icon" id =${recipe.id}>
+      <img class="unselected-chef-hat" src="../assets/selected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
+      </div>`)
+    })
+  }
+}
+//
+// function resetFavePage() {
+//   const resetButton = document.querySelector('.reset-btn')
+//   //reset faves page after search or to search new thing
+// }
 
       function getRecipeCost(allIngredients, event) {
         let instantiatedRecipes = recipeData.map((recipe, index) => {
