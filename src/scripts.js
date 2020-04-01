@@ -5,11 +5,22 @@ const mealPlan = document.querySelector('.meal-plan');
 const searchResults = document.querySelector('.search-results');
 const pantry = document.querySelector('.pantry');
 const allRecipesSection = document.querySelector('.all-recipes-group');
-const user0 = new User(usersData[0]);
+let randomNumber = (Math.floor(Math.random() * 50));
+const user0 = new User(usersData[randomNumber]);
 const searchButton = document.querySelector('.search-button');
 const searchButtonMealPlan = document.querySelector('.meal-plan-search-btn');
 let currentRecipeForCalc;
-const allIngredients = ingredientsData;
+const allIngredients = []
+ingredientsData.forEach(ing => {
+  let someIngredient = new Ingredient(ing);
+  allIngredients.push(someIngredient);
+})
+let allRecipes = [];
+recipeData.map((recipe, index) => {
+  let eachRecipe = new Recipe(recipe);
+  allRecipes.push(eachRecipe);
+});
+console.log(allRecipes)
 const filterButton = document.querySelector('.filter-button')
 
 document.addEventListener('click', changePageView);
@@ -33,6 +44,7 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
     mainPage.classList.toggle('shown')
+    // addChefSelection();
   } else if (event.target === favoritesNavItem && favorites.classList.contains('hidden')) {
     variousPages.forEach(page => page.classList.add('hidden'));
     variousPages.forEach(page => page.classList.remove('shown'));
@@ -60,8 +72,29 @@ function changePageView(event) {
     variousPages.forEach(page => page.classList.remove('shown'));
     searchResults.classList.remove('hidden')
     searchResults.classList.toggle('shown')
-    instantiateAllRecipes();
+    addRecipesToSearchPage();
   }
+}
+
+function addChefSelection() {
+  const chefSelectionContainer = document.querySelector('.featured-recipes-section')
+  // const chefSelection = [allRecipes[47], allRecipes[16], allRecipes[33]];
+  chefSelectionContainer.innerHTML = '';
+  allRecipes.filter((recipe, index) => index === 47 || index === 33 || index === 16).forEach(recipe => {
+  chefSelectionContainer.innerHTML += `<div class="recipe-card" id =${recipe.id}>
+    <img class="recipe-card-image" src=${recipe.image} alt=${recipe.name}>
+    <p class="recipe-card-title">${recipe.name}</p>
+    <img class="unselected-heart" src="../assets/heart-regular.svg" alt="unselected heart icon" id=${recipe.id}>
+    <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
+  </div>`
+  // user0.favoriteRecipes.forEach(recipe => {
+  //   if (recipe.hasBeenFavorited === false) {
+  //
+  //   } else if (recipe.hasBeenAddedToMealPlan === false) {
+  //
+  //   }
+  // })
+  })
 }
 
 function selectCards(event) {
@@ -94,16 +127,13 @@ function selectCards(event) {
   }
 }
 
-function instantiateAllRecipes() {
-  let instantiatedRecipes = recipeData.map((recipe, index) => {
-  let eachRecipe = new Recipe(recipe);
-  return eachRecipe;
-});
-  addRecipesToSearchPage(instantiatedRecipes)
-}
+// function instantiateAllRecipes() {
+//   addRecipesToSearchPage(instantiatedRecipes)
+// }
 
-function addRecipesToSearchPage(instantiatedRecipes) {
-  instantiatedRecipes.forEach(recipe => {
+function addRecipesToSearchPage() {
+  allRecipesSection.innerHTML = '';
+  allRecipes.forEach(recipe => {
   allRecipesSection.innerHTML += `<div class="recipe-card" id =${recipe.id}>
     <img class="recipe-card-image" src=${recipe.image} alt=${recipe.name}>
     <p class="recipe-card-title">${recipe.name}</p>
@@ -111,11 +141,19 @@ function addRecipesToSearchPage(instantiatedRecipes) {
     <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
   </div>`
 });
+// user0.favoriteRecipes.forEach(recipe => {
+//   event.target.src = "../assets/heart-solid.svg"
+//   event.target.alt ="selected heart icon"
+//   event.target.classList.add('selected-heart');
+//   event.target.classList.remove('unselected-heart');
+// })
+// console.log(allRecipes);
+// console.log(user0.favoriteRecipes)
 }
 
 function favoriteRecipe(event) {
   const favoriteMealSection = document.querySelector('.favorited-recipe-group')
-  let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
   currentRecipe.hasBeenFavorited = true;
   console.log(currentRecipe);
   if (!user0.favoriteRecipes.includes(currentRecipe)) {
@@ -131,7 +169,7 @@ function favoriteRecipe(event) {
 
 function addRecipeToMealPlan() {
   const mealPlanSection = document.querySelector('.meal-plan-group')
-  let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
   currentRecipe.hasBeenAddedToMealPlan = true;
   if (!user0.recipesToCook.includes(currentRecipe)) {
   user0.addRecipeToMealsToCook(currentRecipe);
@@ -146,7 +184,7 @@ function addRecipeToMealPlan() {
 
 function removeRecipeFromMealPlan() {
   const mealPlanSection = document.querySelector('.favorited-recipe-group')
-  let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
+  let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
   currentRecipe.hasBeenAddedToMealPlan = false;
   const currentRecipeDiv = document.getElementById(`${currentRecipe.id}`)
   if (user0.recipesToCook.includes(currentRecipe)) {
@@ -158,8 +196,8 @@ function removeRecipeFromMealPlan() {
 
 function removeRecipeFromFavorites() {
   const mealPlanSection = document.querySelector('.favorited-recipe-group')
-  let currentRecipe = recipeData.find(recipe => recipe.id === parseInt(event.target.id))
-  currentRecipe.hasBeenAddedToMealPlan = false;
+  let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
+  currentRecipe.hasBeenFavorited = false;
   const currentRecipeDiv = document.getElementById(`${currentRecipe.id}`)
   if (user0.favoriteRecipes.includes(currentRecipe)) {
     user0.unfavoriteMeal(currentRecipe);
@@ -170,7 +208,7 @@ function removeRecipeFromFavorites() {
 
 function populateRecipePage() {
   recipePage.innerHTML = "";
-  let currentRecipe = recipeData.find(recipe => recipe.id == event.target.id)
+  let currentRecipe = allRecipes.find(recipe => recipe.id == event.target.id)
   recipePage.innerHTML += `<h2 class="recipe-title">${currentRecipe.name}</h2>
   <button class="find-missing-ing-btn">Calculate Missing Ingredient</button>
   <div class="able-to-cook-alert">You have everything you need to cook this recipe</div>
@@ -178,7 +216,7 @@ function populateRecipePage() {
   <ul class="recipe-ingredients">
     <h3>Ingredients</h3>`
   currentRecipe.ingredients.forEach(ing => {
-    ingredientsData.find(ingData => {
+    allIngredients.find(ingData => {
       if (ingData.id === ing.id) {
         recipePage.innerHTML +=
         (`<li>${parseFloat(ing.quantity.amount).toFixed(2)} ${ing.quantity.unit} ${ingData.name}</li>`)
@@ -200,9 +238,11 @@ function populateRecipePage() {
 }
 
 function populatePantryPage() {
+  const welcomeMessage = document.querySelector('.welcome-pantry-title')
+  welcomeMessage.innerText = `Welcome to your pantry, ${user0.name}!`
   const table = document.querySelector('.pantry-table')
     user0.pantry.forEach(ingredient => {
-      ingredientsData.find(ing => {
+      allIngredients.find(ing => {
         if (ing.id === ingredient.ingredient) {
           table.innerHTML +=
           `<tr>
@@ -218,10 +258,10 @@ function populatePantryPage() {
 function showRecipeAlert() {
   let calcMissingIngredientsBtn = document.querySelector('.find-missing-ing-btn')
   let ableToCookAlert = document.querySelector('.able-to-cook-alert')
-  let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
-  let currentRecipe = new Recipe(currentRecipeData)
+  let currentRecipeData = allRecipes.find(recipe => recipe.id === parseInt(event.target.id));
+  // let currentRecipe = new Recipe(currentRecipeData)
   addMissingIngAmount();
-  if (user0.checkIngredientAmts(currentRecipe)) {
+  if (user0.checkIngredientAmts(currentRecipeData)) {
     ableToCookAlert.classList.remove('hidden');
     calcMissingIngredientsBtn.classList.add('hidden')
   } else {
@@ -231,21 +271,23 @@ function showRecipeAlert() {
 }
 
 function addMissingIngAmount() {
-  let currentRecipeData = recipeData.find(recipe => recipe.id == event.target.id)
-  let currentRecipe = new Recipe(currentRecipeData)
-  user0.checkIngredientAmts(currentRecipe);
-  currentRecipeForCalc = currentRecipe.ingredientsNeeded;
+  let currentRecipeData = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
+  // let currentRecipe = new Recipe(currentRecipeData)
+  user0.checkIngredientAmts(currentRecipeData);
+  currentRecipeForCalc = currentRecipeData.ingredientsNeeded;
   addMissingIngName(currentRecipeForCalc);
 }
 
 function addMissingIngName(currentRecipeForCalc) {
+  console.log(`variable name`, currentRecipeForCalc);
   return currentRecipeForCalc.map(ingInRec => {
-    ingredientsData.forEach(ing => {
+    allIngredients.forEach(ing => {
       if (ing.id === ingInRec.id) {
         return ingInRec['name'] = ing.name
       }
     })
   })
+  console.log(`variable name`, currentRecipeForCalc);
 }
 
 function printNeededIngredients(event){
@@ -266,7 +308,7 @@ function searchMealPlanRecipes() {
   const mealPlanSearchTerm = document.querySelector('.meal-plan-search-term');
   let foundRecipeName = user0.recipesToCook.filter(recipe => recipe.name.toLowerCase().includes(mealPlanSearchTerm.value))
   let foundRecipeTag = user0.recipesToCook.filter(recipe => recipe.tags.includes(mealPlanSearchTerm.value))
-  let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === mealPlanSearchTerm.value)
+  let foundRecipeIngredients = allIngredients.filter(ingredient => ingredient.name === mealPlanSearchTerm.value)
   let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
   let searchResults = [foundRecipeName, foundRecipeTag]
   user0.recipesToCook.filter(recipe => {
@@ -303,7 +345,7 @@ function searchFaveRecipes() {
   const searchTerm = document.querySelector('.search-term');
   let foundRecipeName = user0.favoriteRecipes.filter(recipe => recipe.name.toLowerCase().includes(searchTerm.value))
   let foundRecipeTag = user0.favoriteRecipes.filter(recipe => recipe.tags.includes(searchTerm.value))
-  let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === searchTerm.value)
+  let foundRecipeIngredients = allIngredients.filter(ingredient => ingredient.name === searchTerm.value)
   let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
   let searchResults = [foundRecipeName, foundRecipeTag]
     user0.favoriteRecipes.forEach(recipe => {
@@ -341,11 +383,11 @@ function displayFaveSearchedRecipes(regSearchResults) {
 // }
 
       function getRecipeCost(allIngredients, event) {
-        let instantiatedRecipes = recipeData.map((recipe, index) => {
-          let eachRecipe = new Recipe(recipe);
-          return eachRecipe;
-        });
-        let currentRecipe = instantiatedRecipes.find(recipe => recipe.id === parseInt(event.target.id))
+        // let instantiatedRecipes = recipeData.map((recipe, index) => {
+        //   let eachRecipe = new Recipe(recipe);
+        //   return eachRecipe;
+        // });
+        let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
         console.log(currentRecipe)
         console.log(typeof currentRecipe);
         let cost = currentRecipe.calculateCostOfIngredients(allIngredients);
@@ -357,13 +399,13 @@ function displayFaveSearchedRecipes(regSearchResults) {
       function filterRecipes() {
         const ingredientsFilter = document.querySelector('.ingredients-filter');
         const searchInput = document.querySelector('.filter-input');
-        let foundRecipeName = recipeData.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value))
-        let foundRecipeTag = recipeData.filter(recipe => recipe.tags.includes(searchInput.value))
-        let foundRecipeIngredients = ingredientsData.filter(ingredient => ingredient.name === searchInput.value)
+        let foundRecipeName = allRecipes.filter(recipe => recipe.name.toLowerCase().includes(searchInput.value))
+        let foundRecipeTag = allRecipes.filter(recipe => recipe.tags.includes(searchInput.value))
+        let foundRecipeIngredients = allIngredients.filter(ingredient => ingredient.name === searchInput.value)
         let foundRecipeIngredientIds = foundRecipeIngredients.map(ingredient => ingredient.id)
         let searchResults = []
         searchResults.push(foundRecipeName, foundRecipeTag);
-        let crossreferencedIng = recipeData.filter(recipe => {
+        let crossreferencedIng = allRecipes.filter(recipe => {
           recipe.ingredients.forEach(ingredient => {
             if (foundRecipeIngredientIds.includes(ingredient.id)) {
               searchResults.push(recipe)
@@ -390,3 +432,5 @@ function displayFaveSearchedRecipes(regSearchResults) {
           allRecipesSection.innerHTML = `<p>No Search Results Found</p>`
         }
       }
+
+      // window.onload = addChefSelection();

@@ -50,12 +50,12 @@ class User {
       missingIngredients.forEach(ing => {
       recipe.ingredientsNeeded.push({'id': ing.id, 'difference': ing.quantity.amount.toFixed(2) + " " + ing.quantity.unit})
       })
-      let insufficientIngs = matchedIngredients.filter(ing => ing.difference >= 0)
+      let insufficientIngs = matchedIngredients.filter(ing => ing.difference > 0)
       insufficientIngs.forEach(ing => {
       recipe.ingredientsNeeded.push({'id': ing.id, 'difference': ing.difference.toFixed(2) + " " + ing.quantity.unit})
       })
+      console.log(insufficientIngs);
       return recipe.ingredientsNeeded
-      console.log()
     }
     // else {
     //   matchedIngredients.forEach(ing => {
