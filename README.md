@@ -24,4 +24,4 @@ Wireframe
 
 Below is a sample of the functioning website. 
 
-![](https://media.giphy.com/media/LmNlKYHEKq6qCClljM/giphy.mp4)
+![](https://media.giphy.com/media/LmNlKYHEKq6qCClljM/source.mp4)
