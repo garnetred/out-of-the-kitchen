@@ -7,7 +7,7 @@ const Recipe = require('../src/Recipe');
 
 describe('Recipe', function() {
 
-  let user1, ingredient1, ingredient2, allIngredients, recipe1;
+  let user1, ingredient1, ingredient2, ingredient3, ingredient11, ingredient22, ingredient33, ingredient44, allIngredients, allIngredients2, recipe1, recipe2;
 
   beforeEach(function() {
     user1 = new User({name: "Saige O'Kon", id: 1, pantry: [{ingredient: 20081, amount: 4}, {ingredient: 18372, amount: 4}]})
@@ -24,15 +24,15 @@ describe('Recipe', function() {
     recipe1 = new Recipe({
       id: 595736,
       image: "https://spoonacular.com/recipeImages/595736-556x370.jpg",
-      ingredients: [{id: 20081, quantity: {amount: 1.5, unit: "c"}},{id: 18372, quantity: {amount: 0.5, unit: "tsp"}}],
+      ingredients: [{id: 20081, quantity: {amount: 1.5, unit: "c"}}, {id: 18372, quantity: {amount: 0.5, unit: "tsp"}}],
       instructions: [{
-          instruction: "In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.",
-          number: 1
-        },
-        {
-          instruction: "Add egg and vanilla and mix until combined.",
-          number: 2
-        },
+        instruction: "In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.",
+        number: 1
+      },
+      {
+        instruction: "Add egg and vanilla and mix until combined.",
+        number: 2
+      },
       ],
       name: "Loaded Chocolate Chip Pudding Cookie Cups",
       tags: [
@@ -48,7 +48,7 @@ describe('Recipe', function() {
   });
 
   it('should be an instance of the Recipe class', function() {
-    expect(recipe1).to.be.an.instanceof(Recipe);;
+    expect(recipe1).to.be.an.instanceof(Recipe);
   });
 
   it('should calculate the cost of ingredients', function() {
