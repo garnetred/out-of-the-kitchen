@@ -24,3 +24,5 @@ Wireframe
 
 Below is a sample of the functioning website. 
 
+![](https://gph.is/g/4Dg6ONB)
+
