@@ -12,7 +12,7 @@ Then, run ```npm install``` in the command line in order to install necessary de
 You can now view the website by running the command ```open src/index.html``` in the command line. 
 
 Additionally, you can view the deployed site via this link: 	
-https://allyjarjour.github.io/whats-cookin-starter-kit/src/index.html
+https://garnetred.github.io/out-of-the-kitchen/
 
 
 ## Design 
