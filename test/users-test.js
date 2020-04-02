@@ -1,9 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
-const userData = '../data/users.js';
 
 const User = require('../src/User');
-const Ingredient = require('../src/Ingredient');
 const Recipe = require('../src/Recipe');
 
 describe('User', function() {
@@ -15,25 +13,19 @@ describe('User', function() {
     user2 = new User({name: "Ephraim Goyette", id: 2, pantry: [{ingredient: 2048, amount: 1}, {ingredient: 18371, amount: 7}]});
     user3 = new User({name: "Jeremy Beramy", id: 3, pantry: []});
     user4 = new User({name: "Rachael Green", id: 4, pantry: [{ingredient: 222, amount: 1}, {ingredient: 626, amount: 5}]});
-      //some ingredientAmts
-      //no ingredient
-      //all ingredients (happy)
-
-      //enough ingredientAmts
-      //don't have enough ingredients
 
     recipe1 = new Recipe({
       id: 595736,
       image: "https://spoonacular.com/recipeImages/595736-556x370.jpg",
-      ingredients: [{id: 20081, quantity: {amount: 1.5, unit: "c"}},{id: 18372, quantity: {amount: 0.5, unit: "tsp"}}],
+      ingredients: [{id: 20081, quantity: {amount: 1.5, unit: "c"}}, {id: 18372, quantity: {amount: 0.5, unit: "tsp"}}],
       instructions: [{
-          instruction: "In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.",
-          number: 1
-        },
-        {
-          instruction: "Add egg and vanilla and mix until combined.",
-          number: 2
-        },
+        instruction: "In a large mixing bowl, whisk together the dry ingredients (flour, pudding mix, soda and salt). Set aside.In a large mixing bowl of a stand mixer, cream butter for 30 seconds. Gradually add granulated sugar and brown sugar and cream until light and fluffy.",
+        number: 1
+      },
+      {
+        instruction: "Add egg and vanilla and mix until combined.",
+        number: 2
+      },
       ],
       name: "Loaded Chocolate Chip Pudding Cookie Cups",
       tags: [
