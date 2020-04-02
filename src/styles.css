@@ -8,49 +8,35 @@ nav {
   background-color: black;
   color: white;
   height: 75px;
-  /* position: fixed; */
   position: absolute;
   top: 0;
   width: 100%;
-  /* z-index: 1; */
 }
 
 
 header {
   cursor: pointer;
   display: inline-block;
+  font-family: 'Dancing Script', cursive;
   font-size: 50px;
   font-weight: 600;
   position: absolute;
   top: 5px;
-  font-family: 'Dancing Script', cursive;
 }
 
 input {
   margin: 0;
 }
 
-footer {
-  width: 100%;
-  color: white;
-  background-color: black;
-  height: 150px;
-  text-align: center;
-  padding-top: 50px;
-  /* position: absolute; */
-  margin-bottom: 0;
-  /* flex-shrink: 0; */
-}
-
 table {
-    border-collapse: collapse;
-    text-align: left;
-    width: 60%;
-    margin: 0px auto;
+  border-collapse: collapse;
+  margin: 0px auto;
+  text-align: left;
+  width: 60%;
 }
 
 table tr {
-    border-bottom: 1px solid;
+  border-bottom: 1px solid;
 }
 
 table td {
@@ -63,14 +49,27 @@ table td {
 }
 
 table td span {
-    display: none;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 5px;
+  display: none;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 5px;
 }
 
 .recipe-ingredients {
   margin: 50px 50px 50px 20px;
+  width: 40%;
+}
+
+.find-missing-ing-btn {
+  background-color: #e3e2de;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.each-ing {
+  padding-left: 10px;
   width: 40%;
 }
 
@@ -104,15 +103,15 @@ table td span {
 .recipe-card-title,
 .welcome-pantry-title,
 .pantry-title {
-  pointer-events: none;
   font-weight: 600;
+  pointer-events: none;
   text-align: center;
 }
 
 .header-image {
-  width: 80%;
-  margin: 70px auto 0px auto;
   display: block;
+  margin: 70px auto 0px auto;
+  width: 80%;
 }
 
 .featured-recipes-section {
@@ -129,12 +128,12 @@ table td span {
 
 .recipe-card {
   background-color: #dae4e6;
+  cursor: pointer;
   display: inline-block;
   height: 300px;
   margin: 20px;
   position: relative;
   width: 25%;
-  cursor: pointer;
 }
 
 .recipe-card:hover {
@@ -149,20 +148,13 @@ table td span {
 
 .recipe-page-image {
   float: right;
-  width: 50%;
   margin: 50px;
+  width: 50%;
 }
 
-.recipe-page h2 {
+h2 {
   text-align: center;
 }
-
-/* icons */
-
-/* .profile-icon {
-  height: 30px;
-  width: 30px;
-} */
 
 .unselected-heart,
 .selected-heart,
@@ -198,22 +190,23 @@ table td span {
 }
 
 .able-to-cook-alert {
-  width: 300px;
   background-color: green;
   border-radius: 10px;
   color: white;
   margin-top: 20px;
-  padding: 5px;
+  padding: 10px;
+  text-align: center;
+  width: 300px;
 }
 
 .price-to-make-alert {
-  width: 200px;
   background-color: purple;
   border-radius: 10px;
   color: white;
   margin-top: 20px;
-  padding: 5px;
-  align-items: right;
+  padding: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .pantry-sub-header {
@@ -224,59 +217,57 @@ table td span {
 
 .favorites {
   width: 100%;
-  /* display: flex; */
-  /* justify-content: center; */
 }
 
 .search-bar {
-  margin: 8% 20% 5% 0;
-  float: right;
-  width: 30%;
   display: flex;
+  float: right;
+  margin: 8% 20% 5% 0;
+  width: 30%;
 }
 
 .search-button-icon {
-  width: 25px;
+  cursor: pointer;
   height: 25px;
   margin-top: 3px;
-  cursor: pointer;
   pointer-events: none;
+  width: 25px;
 }
 
 .search-button,
 .meal-plan-search-btn {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #43A2FE;
   background: #43A2FE;
-  color: #fff;
   border-radius: 0 5px 5px 0;
+  border: 1px solid #43A2FE;
+  color: #fff;
   cursor: pointer;
+  height: 36px;
+  width: 40px;
 }
 
 .search-term,
 .meal-plan-search-term {
-  width: 100%;
-  border: 3px solid #43A2FE;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
   border-radius: 5px 0 0 5px;
+  border-right: none;
+  border: 3px solid #43A2FE;
   color: black;
+  height: 20px;
+  padding: 5px;
+  width: 100%;
 }
 
 .favorited-recipe-group,
 .meal-plan-group{
+  margin: 10% 15% 0 15%;
   position: absolute;
   top: 20%;
   width: 80%;
-  margin: 10% 15% 0 15%;
 }
 
 .all-recipes-group {
+  margin: 0 15%;
   top: 20%;
   width: 80%;
-  margin: 0 15%;
 }
 
 .favorites-header,
@@ -289,8 +280,8 @@ table td span {
 /* all recipes page*/
 
 .all-recipes-header {
-  margin-top: 100px;
   margin-left: 10%;
+  margin-top: 100px;
 }
 
 .recipes-header {
@@ -298,35 +289,35 @@ table td span {
 }
 
 .filters {
-  display: block;
-  width: 80%;
-  height: 225px;
   background-color: lightgrey;
+  border: 1px solid black;
+  display: block;
+  height: 225px;
   margin: 10px auto 0 auto;
   position: relative;
-  border: 1px solid black;
+  width: 80%;
 }
 
 .tags {
-  padding-top: 1%;
   padding-left: 5%;
+  padding-top: 1%;
 }
 
 .ingredients {
-  padding-left: 5%;
   padding-bottom: 1%;
+  padding-left: 5%;
 }
 
 .filter-button {
   background-color: #43A2FE;
-  color: white;
   border-radius: 8px;
+  bottom: 34%;
+  color: white;
+  font-size: 25px;
+  height: 50px;
   position: absolute;
   right: 15%;
-  bottom: 34%;
   width: 15%;
-  height: 50px;
-  font-size: 25px;
 }
 
 /*search page*/
@@ -336,34 +327,22 @@ table td span {
 }
 
 .filter-input {
-  margin: 100px auto;
-  width: 30%;
-  height: 20%;
+  border-radius: 8px;
   display: flex;
   font-size: 16px;
-  border-radius: 8px;
+  height: 20%;
+  margin: 100px auto;
+  width: 30%;
 }
-/* .search-button-icon {
-  width: 25px;
-  height: 25px;
-  margin-top: 3px;
-}
-.search-button {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #43A2FE;
-  background: #43A2FE;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-} */
 
-/* .filter-options {
-  width: 100%;
-  border: 3px solid #43A2FE;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  color: black;
-} */
+.missing-ing-section {
+  background-color: #fffad4;
+  border-radius: 15px;
+  display: inline-block;
+  padding: 30px;
+}
+
+.needed-ing-title {
+  font-weight: bold;
+  margin-top: 0px;
+}

@@ -30,7 +30,6 @@ searchButton.addEventListener('click', searchFaveRecipes);
 searchButtonMealPlan.addEventListener('click', searchMealPlanRecipes);
 recipePage.addEventListener('click', printNeededIngredients);
 
-
 function changePageView(event) {
   const header = document.getElementsByTagName('header')[0]
   const favoritesNavItem = document.querySelector('.favorites-navbar');
@@ -76,27 +75,6 @@ function changePageView(event) {
   }
 }
 
-function addChefSelection() {
-  const chefSelectionContainer = document.querySelector('.featured-recipes-section')
-  // const chefSelection = [allRecipes[47], allRecipes[16], allRecipes[33]];
-  chefSelectionContainer.innerHTML = '';
-  allRecipes.filter((recipe, index) => index === 47 || index === 33 || index === 16).forEach(recipe => {
-  chefSelectionContainer.innerHTML += `<div class="recipe-card" id =${recipe.id}>
-    <img class="recipe-card-image" src=${recipe.image} alt=${recipe.name}>
-    <p class="recipe-card-title">${recipe.name}</p>
-    <img class="unselected-heart" src="../assets/heart-regular.svg" alt="unselected heart icon" id=${recipe.id}>
-    <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
-  </div>`
-  // user0.favoriteRecipes.forEach(recipe => {
-  //   if (recipe.hasBeenFavorited === false) {
-  //
-  //   } else if (recipe.hasBeenAddedToMealPlan === false) {
-  //
-  //   }
-  // })
-  })
-}
-
 function selectCards(event) {
   if (event.target.classList.contains('unselected-heart')) {
     favoriteRecipe(event);
@@ -127,10 +105,6 @@ function selectCards(event) {
   }
 }
 
-// function instantiateAllRecipes() {
-//   addRecipesToSearchPage(instantiatedRecipes)
-// }
-
 function addRecipesToSearchPage() {
   allRecipesSection.innerHTML = '';
   allRecipes.forEach(recipe => {
@@ -141,14 +115,6 @@ function addRecipesToSearchPage() {
     <img class="unselected-chef-hat" src="../assets/unselected-chef-hat.svg" alt="unselected recipe to cook" id=${recipe.id}>
   </div>`
 });
-// user0.favoriteRecipes.forEach(recipe => {
-//   event.target.src = "../assets/heart-solid.svg"
-//   event.target.alt ="selected heart icon"
-//   event.target.classList.add('selected-heart');
-//   event.target.classList.remove('unselected-heart');
-// })
-// console.log(allRecipes);
-// console.log(user0.favoriteRecipes)
 }
 
 function favoriteRecipe(event) {
@@ -229,7 +195,7 @@ function populateRecipePage() {
     <h3>Instructions</h3>`
   currentRecipe.instructions.forEach(instruction => {
     recipePage.innerHTML +=
-    (`<li>${instruction.instruction}</li>`)
+    (`<li class="each-ing">${instruction.instruction}</li>`)
   })
   recipePage.innerHTML +=
   `</ol>`
@@ -293,11 +259,14 @@ function addMissingIngName(currentRecipeForCalc) {
 function printNeededIngredients(event){
   let calcMissingIngredientsBtn = document.querySelector('.find-missing-ing-btn')
   let recipeTitle = document.querySelector('.recipe-title')
+  recipeTitle.insertAdjacentHTML('afterend', `<ul class="missing-ing-section">
+  </ul>`)
+  const missingIngSection = document.querySelector('.missing-ing-section')
   if (event.target.classList.contains('find-missing-ing-btn')) {
-    recipeTitle.insertAdjacentHTML('beforeend', `<p class="needed-ing-title">You still need the following to make this recipe:</p>`)
+    missingIngSection.innerHTML += `<p class="needed-ing-title">You still need the following to make this recipe:</p>`
     calcMissingIngredientsBtn.classList.add('hidden');
     currentRecipeForCalc.forEach(ing => {
-      recipeTitle.insertAdjacentHTML('afterend', `<p>${ing.difference} ${ing.name}</p>`)
+      missingIngSection.innerHTML += `<li>${ing.difference} ${ing.name}</li>`
     })
     }
   }
@@ -376,17 +345,8 @@ function displayFaveSearchedRecipes(regSearchResults) {
     })
   }
 }
-//
-// function resetFavePage() {
-//   const resetButton = document.querySelector('.reset-btn')
-//   //reset faves page after search or to search new thing
-// }
 
       function getRecipeCost(allIngredients, event) {
-        // let instantiatedRecipes = recipeData.map((recipe, index) => {
-        //   let eachRecipe = new Recipe(recipe);
-        //   return eachRecipe;
-        // });
         let currentRecipe = allRecipes.find(recipe => recipe.id === parseInt(event.target.id))
         console.log(currentRecipe)
         console.log(typeof currentRecipe);
@@ -432,5 +392,3 @@ function displayFaveSearchedRecipes(regSearchResults) {
           allRecipesSection.innerHTML = `<p>No Search Results Found</p>`
         }
       }
-
-      // window.onload = addChefSelection();
