@@ -12,6 +12,7 @@ Then, run ```npm install``` in the command line in order to install necessary de
 You can now view the website by running the command ```open src/index.html``` in the command line. 
 
 Additionally, you can view the deployed site via this link: 
+https://allyjarjour.github.io/whats-cookin-starter-kit/
 
 ## Design 
 Both collaborators created separate designs for the website, which were merged in order to create the final product. Ally created a wireframe using Balsamiq, and December created a mockup using Sketch. Views from both designs are below: 
